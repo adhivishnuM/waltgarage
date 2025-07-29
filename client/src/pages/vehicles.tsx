@@ -178,7 +178,7 @@ export default function Vehicles() {
                   <Label htmlFor="color">Color</Label>
                   <Input
                     id="color"
-                    value={formData.color}
+                    value={formData.color || ""}
                     onChange={(e) => setFormData({...formData, color: e.target.value})}
                     placeholder="e.g., Metallic Blue"
                     className="bg-black border-gray-600"
@@ -211,7 +211,7 @@ export default function Vehicles() {
       {/* Vehicle List */}
       <div className="px-6 py-6">
         <div className="space-y-4">
-          {vehicles.map((vehicle: Vehicle) => (
+          {((vehicles as any) || []).map((vehicle: Vehicle) => (
             <VehicleCard
               key={vehicle.id}
               vehicle={vehicle}
@@ -222,7 +222,7 @@ export default function Vehicles() {
             />
           ))}
 
-          {vehicles.length === 0 && (
+          {((vehicles as any) || []).length === 0 && (
             <Card className="bg-surface border-gray-700">
               <CardContent className="p-8 text-center">
                 <div className="text-gray-400 mb-4">No vehicles registered</div>

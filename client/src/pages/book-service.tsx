@@ -143,7 +143,7 @@ export default function BookService() {
         {/* Vehicle Selection */}
         {currentStep === BOOKING_STEPS.VEHICLE_SELECTION && (
           <div className="space-y-4">
-            {vehicles.map((vehicle: Vehicle) => (
+            {((vehicles as any) || []).map((vehicle: Vehicle) => (
               <VehicleCard
                 key={vehicle.id}
                 vehicle={vehicle}

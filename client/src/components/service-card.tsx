@@ -57,7 +57,7 @@ export function ServiceCard({ service, onTrack, onViewDetails }: ServiceCardProp
         
         <div className="text-gray-400 text-sm mb-2">
           {service.vehicle && `${service.vehicle.brand} ${service.vehicle.model}`} • 
-          {new Date(service.createdAt).toLocaleDateString()}
+          {new Date(service.createdAt || 0).toLocaleDateString()}
         </div>
         
         <div className="flex items-center justify-between">

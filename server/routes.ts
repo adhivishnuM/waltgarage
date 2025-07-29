@@ -386,7 +386,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       todayStart.setHours(0, 0, 0, 0);
       
       const todayServices = services.filter(s => 
-        new Date(s.createdAt) >= todayStart && s.status === "completed"
+        new Date(s.createdAt || 0) >= todayStart && s.status === "completed"
       );
       
       const todayEarnings = todayServices.reduce((sum, service) => {
@@ -426,7 +426,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Update user wallet balance
       const user = await storage.getUser(userId);
       if (user) {
-        const currentBalance = parseFloat(user.walletBalance);
+        const currentBalance = parseFloat(user.walletBalance || "0");
         const amount = parseFloat(transactionData.amount);
         const newBalance = transactionData.type === "credit" ? 
           currentBalance + amount : currentBalance - amount;

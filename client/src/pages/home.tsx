@@ -55,13 +55,13 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-4">
           <Card className="bg-surface border-gray-800">
             <CardContent className="p-4">
-              <div className="text-2xl font-bold">{stats.totalServices || 0}</div>
+              <div className="text-2xl font-bold">{(stats as any)?.totalServices || 0}</div>
               <div className="text-gray-400 text-sm">Total Services</div>
             </CardContent>
           </Card>
           <Card className="bg-surface border-gray-800">
             <CardContent className="p-4">
-              <div className="text-2xl font-bold text-electric">₹{stats.savings || 0}</div>
+              <div className="text-2xl font-bold text-electric">₹{(stats as any)?.savings || 0}</div>
               <div className="text-gray-400 text-sm">Money Saved</div>
             </CardContent>
           </Card>
@@ -108,7 +108,7 @@ export default function Home() {
         </div>
         
         <div className="space-y-4">
-          {recentServices.length === 0 ? (
+          {((recentServices as any) || []).length === 0 ? (
             <Card className="bg-surface border-gray-800">
               <CardContent className="p-8 text-center">
                 <div className="text-gray-400 mb-2">No recent services</div>
@@ -120,7 +120,7 @@ export default function Home() {
               </CardContent>
             </Card>
           ) : (
-            recentServices.map((service: any) => (
+            ((recentServices as any) || []).map((service: any) => (
               <ServiceCard key={service.id} service={service} />
             ))
           )}

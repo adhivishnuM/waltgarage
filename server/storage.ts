@@ -80,10 +80,13 @@ export class MemStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
     const user: User = { 
-      ...insertUser, 
+      ...insertUser,
       id,
-      walletBalance: "0.00",
-      isActive: true,
+      phone: insertUser.phone ?? null,
+      role: insertUser.role ?? "customer",
+      walletBalance: insertUser.walletBalance ?? "0.00",
+      profileImage: insertUser.profileImage ?? null,
+      isActive: insertUser.isActive ?? true,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -112,8 +115,12 @@ export class MemStorage implements IStorage {
   async createVehicle(insertVehicle: InsertVehicle): Promise<Vehicle> {
     const id = randomUUID();
     const vehicle: Vehicle = { 
-      ...insertVehicle, 
+      ...insertVehicle,
       id,
+      color: insertVehicle.color ?? null,
+      batteryCapacity: insertVehicle.batteryCapacity ?? null,
+      currentBattery: insertVehicle.currentBattery ?? 100,
+      lastServiceDate: insertVehicle.lastServiceDate ?? null,
       createdAt: new Date()
     };
     this.vehicles.set(id, vehicle);
@@ -137,7 +144,7 @@ export class MemStorage implements IStorage {
   async getServicesByUserId(userId: string): Promise<Service[]> {
     return Array.from(this.services.values())
       .filter(service => service.customerId === userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
   }
 
   async getActiveServiceByUserId(userId: string): Promise<Service | undefined> {
@@ -158,9 +165,19 @@ export class MemStorage implements IStorage {
   async createService(insertService: InsertService): Promise<Service> {
     const id = randomUUID();
     const service: Service = { 
-      ...insertService, 
+      ...insertService,
       id,
-      status: "pending",
+      partnerId: insertService.partnerId ?? null,
+      issueDescription: insertService.issueDescription ?? null,
+      status: insertService.status ?? "pending",
+      priority: insertService.priority ?? "normal",
+      serviceLocation: insertService.serviceLocation ?? null,
+      scheduledDate: insertService.scheduledDate ?? null,
+      completedDate: insertService.completedDate ?? null,
+      estimatedCost: insertService.estimatedCost ?? null,
+      finalCost: insertService.finalCost ?? null,
+      rating: insertService.rating ?? null,
+      feedback: insertService.feedback ?? null,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -185,8 +202,10 @@ export class MemStorage implements IStorage {
   async createServiceTracking(insertTracking: InsertServiceTracking): Promise<ServiceTracking> {
     const id = randomUUID();
     const tracking: ServiceTracking = { 
-      ...insertTracking, 
+      ...insertTracking,
       id,
+      currentLocation: insertTracking.currentLocation ?? null,
+      estimatedArrival: insertTracking.estimatedArrival ?? null,
       lastUpdated: new Date()
     };
     this.serviceTracking.set(id, tracking);
@@ -206,14 +225,15 @@ export class MemStorage implements IStorage {
   async getWalletTransactionsByUserId(userId: string): Promise<WalletTransaction[]> {
     return Array.from(this.walletTransactions.values())
       .filter(transaction => transaction.userId === userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
   }
 
   async createWalletTransaction(insertTransaction: InsertWalletTransaction): Promise<WalletTransaction> {
     const id = randomUUID();
     const transaction: WalletTransaction = { 
-      ...insertTransaction, 
+      ...insertTransaction,
       id,
+      serviceId: insertTransaction.serviceId ?? null,
       createdAt: new Date()
     };
     this.walletTransactions.set(id, transaction);
@@ -224,15 +244,16 @@ export class MemStorage implements IStorage {
   async getNotificationsByUserId(userId: string): Promise<Notification[]> {
     return Array.from(this.notifications.values())
       .filter(notification => notification.userId === userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
   }
 
   async createNotification(insertNotification: InsertNotification): Promise<Notification> {
     const id = randomUUID();
     const notification: Notification = { 
-      ...insertNotification, 
+      ...insertNotification,
       id,
-      isRead: false,
+      data: insertNotification.data ?? null,
+      isRead: insertNotification.isRead ?? false,
       createdAt: new Date()
     };
     this.notifications.set(id, notification);

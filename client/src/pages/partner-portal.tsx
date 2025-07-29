@@ -69,7 +69,7 @@ export default function PartnerPortal() {
           <div>
             <h1 className="text-xl font-semibold">Partner Dashboard</h1>
             <div className="text-blue-200 text-sm">
-              Active Services: {activeServices.length}
+              Active Services: {((activeServices as any) || []).length}
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -85,7 +85,7 @@ export default function PartnerPortal() {
           <Card className="bg-surface border-gray-700">
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-electric">
-                ₹{partnerStats.todayEarnings || 0}
+                ₹{(partnerStats as any)?.todayEarnings || 0}
               </div>
               <div className="text-gray-400 text-sm">Today's Earnings</div>
             </CardContent>
@@ -93,7 +93,7 @@ export default function PartnerPortal() {
           <Card className="bg-surface border-gray-700">
             <CardContent className="p-4">
               <div className="text-2xl font-bold">
-                {partnerStats.completedServices || 0}
+                {(partnerStats as any)?.completedServices || 0}
               </div>
               <div className="text-gray-400 text-sm">Services Today</div>
             </CardContent>
@@ -105,19 +105,19 @@ export default function PartnerPortal() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Pending Services</h2>
             <Badge className="bg-electric/20 text-electric">
-              {pendingServices.length} new requests
+              {((pendingServices as any) || []).length} new requests
             </Badge>
           </div>
 
           <div className="space-y-4">
-            {pendingServices.length === 0 ? (
+            {((pendingServices as any) || []).length === 0 ? (
               <Card className="bg-surface border-gray-700">
                 <CardContent className="p-6 text-center">
                   <div className="text-gray-400">No pending services</div>
                 </CardContent>
               </Card>
             ) : (
-              pendingServices.map((service: any) => (
+              ((pendingServices as any) || []).map((service: any) => (
                 <Card key={service.id} className="bg-surface border-gray-700">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">
@@ -170,14 +170,14 @@ export default function PartnerPortal() {
         <div>
           <h2 className="text-lg font-semibold mb-4">Active Services</h2>
           <div className="space-y-4">
-            {activeServices.length === 0 ? (
+            {((activeServices as any) || []).length === 0 ? (
               <Card className="bg-surface border-gray-700">
                 <CardContent className="p-6 text-center">
                   <div className="text-gray-400">No active services</div>
                 </CardContent>
               </Card>
             ) : (
-              activeServices.map((service: any) => (
+              ((activeServices as any) || []).map((service: any) => (
                 <Card key={service.id} className="bg-surface border-blue-500">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">

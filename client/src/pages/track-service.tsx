@@ -17,8 +17,8 @@ export default function TrackService() {
   });
 
   const { data: tracking } = useQuery({
-    queryKey: ["/api/services", activeService?.id, "tracking"],
-    enabled: !!activeService,
+    queryKey: ["/api/services", (activeService as any)?.id, "tracking"],
+    enabled: !!(activeService as any),
     refetchInterval: 5000, // Update every 5 seconds
   });
 
@@ -89,16 +89,16 @@ export default function TrackService() {
           <div>
             <h1 className="text-xl font-semibold">Track Service</h1>
             <div className="text-sm text-electric">
-              {getStatusText(tracking?.status || "scheduled")}
+              {getStatusText((tracking as any)?.status || "scheduled")}
             </div>
           </div>
         </div>
       </div>
 
       {/* Live Map */}
-      {tracking && (
+      {(tracking as any) && (
         <TrackingMap 
-          tracking={tracking} 
+          tracking={tracking as any} 
           className="h-64 bg-surface border-b border-gray-800" 
         />
       )}
@@ -110,12 +110,12 @@ export default function TrackService() {
             <div className="flex items-center space-x-3">
               <div className="w-3 h-3 bg-electric rounded-full animate-pulse"></div>
               <div className="font-medium text-electric">
-                {getStatusText(tracking?.status || "scheduled")}
+                {getStatusText((tracking as any)?.status || "scheduled")}
               </div>
             </div>
             <div className="text-sm text-gray-400 mt-1">
-              Estimated arrival: {tracking?.estimatedArrival ? 
-                new Date(tracking.estimatedArrival).toLocaleTimeString() : 
+              Estimated arrival: {(tracking as any)?.estimatedArrival ? 
+                new Date((tracking as any).estimatedArrival).toLocaleTimeString() : 
                 "15 minutes"}
             </div>
           </CardContent>
@@ -155,24 +155,24 @@ export default function TrackService() {
               <div className="flex-1">
                 <div className="font-medium">Service Confirmed</div>
                 <div className="text-gray-400 text-sm">
-                  {new Date(activeService.createdAt).toLocaleString()}
+                  {new Date((activeService as any).createdAt || 0).toLocaleString()}
                 </div>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
               <div className={`w-4 h-4 rounded-full ${
-                tracking?.status === "on_way" ? "bg-electric animate-pulse" : "bg-electric"
+                (tracking as any)?.status === "on_way" ? "bg-electric animate-pulse" : "bg-electric"
               }`}></div>
               <div className="flex-1">
                 <div className={`font-medium ${
-                  tracking?.status === "on_way" ? "text-electric" : ""
+                  (tracking as any)?.status === "on_way" ? "text-electric" : ""
                 }`}>
                   Technician Dispatched
                 </div>
                 <div className="text-gray-400 text-sm">
-                  {tracking?.lastUpdated ? 
-                    new Date(tracking.lastUpdated).toLocaleString() : 
+                  {(tracking as any)?.lastUpdated ? 
+                    new Date((tracking as any).lastUpdated).toLocaleString() : 
                     "In progress"}
                 </div>
               </div>
@@ -180,16 +180,16 @@ export default function TrackService() {
             
             <div className="flex items-center space-x-4">
               <div className={`w-4 h-4 rounded-full ${
-                tracking?.status === "working" ? "bg-electric" : "bg-gray-600"
+                (tracking as any)?.status === "working" ? "bg-electric" : "bg-gray-600"
               }`}></div>
               <div className="flex-1">
                 <div className={`font-medium ${
-                  tracking?.status === "working" ? "text-electric" : "text-gray-400"
+                  (tracking as any)?.status === "working" ? "text-electric" : "text-gray-400"
                 }`}>
                   Service in Progress
                 </div>
                 <div className="text-gray-400 text-sm">
-                  {tracking?.status === "working" ? "Now" : "Awaiting arrival"}
+                  {(tracking as any)?.status === "working" ? "Now" : "Awaiting arrival"}
                 </div>
               </div>
             </div>
@@ -211,15 +211,15 @@ export default function TrackService() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-400">Vehicle</span>
-                <span>{activeService.vehicle?.brand} {activeService.vehicle?.model}</span>
+                <span>{(activeService as any).vehicle?.brand} {(activeService as any).vehicle?.model}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">Issue</span>
-                <span className="capitalize">{activeService.serviceType.replace("_", " ")}</span>
+                <span className="capitalize">{(activeService as any).serviceType?.replace("_", " ")}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">Service Fee</span>
-                <span className="text-electric">₹{activeService.estimatedCost}</span>
+                <span className="text-electric">₹{(activeService as any).estimatedCost}</span>
               </div>
             </div>
           </CardContent>
