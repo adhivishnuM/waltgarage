@@ -22,12 +22,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(firebaseUser);
       
       if (firebaseUser) {
-        // Fetch user data from your backend
+        // Fetch user data from your backend using email
         try {
-          const response = await fetch(`/api/users/${firebaseUser.uid}`);
+          const response = await fetch(`/api/users/email/${encodeURIComponent(firebaseUser.email || '')}`);
           if (response.ok) {
             const userData = await response.json();
             setUserData(userData);
+          } else if (response.status === 404) {
+            // User doesn't exist in backend, create them
+            const createResponse = await fetch('/api/users', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: firebaseUser.email,
+                name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+                role: 'customer'
+              })
+            });
+            if (createResponse.ok) {
+              const newUserData = await createResponse.json();
+              setUserData(newUserData);
+            }
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
